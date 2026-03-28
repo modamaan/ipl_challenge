@@ -8,6 +8,36 @@ import { Swords, Share2, Flame, Award, CircleDollarSign, User } from "lucide-rea
 import Link from "next/link";
 import { BoardShareButton } from "@/components/board-share-button";
 import { CountdownTimer } from "@/components/countdown-timer";
+import type { Metadata } from "next";
+
+export async function generateMetadata(props: { params: Promise<{ challengeId: string }> }): Promise<Metadata> {
+  const { challengeId } = await props.params;
+  const challengeRes = await db.select().from(challenges).where(eq(challenges.id, challengeId)).limit(1);
+  if (!challengeRes.length) return { title: "Challenge Not Found" };
+  
+  const creatorRes = await db.select().from(users).where(eq(users.id, challengeRes[0].creatorId)).limit(1);
+  const matchRes = await db.select().from(matches).where(eq(matches.id, challengeRes[0].matchId)).limit(1);
+
+  if (!creatorRes.length || !matchRes.length) return { title: "Challenge" };
+  
+  const title = `${creatorRes[0].name} challenged you! | ${matchRes[0].team1} vs ${matchRes[0].team2}`;
+  const description = `Stakes: ${challengeRes[0].stakesDescription}. Predict the outcome of ${matchRes[0].team1} vs ${matchRes[0].team2} right now in the Arena!`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    }
+  };
+}
 
 export default async function ChallengePage(props: { params: Promise<{ challengeId: string }> }) {
   const session = await auth();

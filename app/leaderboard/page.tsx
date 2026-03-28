@@ -4,6 +4,12 @@ import { desc } from "drizzle-orm";
 import { Trophy, Medal, Flame, Crown } from "lucide-react";
 import Link from "next/link";
 import { auth } from "@/auth";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Global Leaderboard",
+  description: "Compare your IPL prediction rankings against players worldwide.",
+};
 
 export default async function LeaderboardPage() {
   const session = await auth();

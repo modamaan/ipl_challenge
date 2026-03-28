@@ -13,6 +13,12 @@ import { MobileNav } from "@/components/mobile-nav";
 import { RulesDialog } from "@/components/rules-dialog";
 import { getTeam } from "@/lib/teams";
 import { TeamLogo } from "@/components/team-logo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "The Arena",
+  description: "Welcome to the Arena. Lock in your boldest IPL predictions, dominate your rivals, and climb the ranks.",
+};
 
 export default async function Dashboard(props: any) {
   const searchParams = await props.searchParams;
@@ -89,9 +95,9 @@ export default async function Dashboard(props: any) {
         </div>
       </nav>
 
-      <main className="max-w-[1400px] mx-auto px-6 pt-10">
-        {/* HERO BANNER */}
-        <div className="relative rounded-3xl overflow-hidden border border-[#2d3449] bg-[#0b1326] p-10 md:p-16 mb-12 group shadow-[0_15px_50px_rgba(0,0,0,0.6)]">
+      <main>
+        {/* HERO BANNER — full width */}
+        <div className="relative overflow-hidden bg-[#0b1326] px-6 sm:px-10 md:px-16 pt-16 pb-16 md:pb-20 group">
            {/* Background Grid Pattern */}
            <div className="absolute inset-0 bg-[linear-gradient(to_right,#131b2ede_1px,transparent_1px),linear-gradient(to_bottom,#131b2ede_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30"></div>
            
@@ -103,7 +109,7 @@ export default async function Dashboard(props: any) {
            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#c0c1ff] via-[#8084ff] to-[#ffb0cd]"></div>
            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[1px] bg-white opacity-50 blur-[2px]"></div>
 
-           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
+           <div className="relative z-10 max-w-[1400px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
                <div className="max-w-xl">
                   {/* Status Badge */}
                   <div className="inline-flex items-center gap-2 mb-6 bg-[#131b2e]/80 border border-[#2d3449] px-3 py-1.5 rounded-full backdrop-blur-md shadow-sm">
@@ -154,7 +160,8 @@ export default async function Dashboard(props: any) {
            </div>
         </div>
 
-        {/* MATCHES SECTION HEADER */}
+        {/* MATCHES SECTION — constrained */}
+        <div className="max-w-[1400px] mx-auto px-6">
         <div id="arena" className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 mt-16 scroll-mt-24">
            <h2 className="text-3xl font-['Space_Grotesk',_sans-serif] font-black text-white italic tracking-tighter uppercase">
              {filter === 'upcoming' ? 'Upcoming Matches' : filter === 'completed' ? 'Past Matches' : 'Arena Matches'}
@@ -285,6 +292,7 @@ export default async function Dashboard(props: any) {
             </div>
           )}
         </div>
+       </div> {/* end constrained matches wrapper */}
       </main>
     </div>
   )

@@ -10,6 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { IPL_TEAMS } from "@/lib/teams";
 import Link from "next/link";
 import { ArrowLeft, Rocket, Activity, CheckCircle2, ShieldAlert } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Control Center",
+  description: "Manage upcoming IPL matches and resolve tournament matrix.",
+};
 
 export default async function AdminPage() {
   const session = await auth();
