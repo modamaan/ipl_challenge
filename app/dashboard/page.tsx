@@ -54,7 +54,7 @@ export default async function Dashboard(props: any) {
     <div className="min-h-screen bg-[#0b1326] text-[#dae2fd] pb-24 font-['Inter',_sans-serif]">
       {/* KINETIC NAV */}
       <nav className="border-b border-[#171f33] bg-[#0b1326]/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="w-full px-6 sm:px-10 h-20 flex items-center justify-between">
           <div className="flex items-center gap-10">
             <Link href="/" className="font-['Space_Grotesk',_sans-serif] font-black text-xl sm:text-2xl tracking-tighter italic text-white flex items-center gap-2 whitespace-nowrap shrink-0">
               <Flame className="w-5 h-5 sm:w-6 sm:h-6 text-[#c0c1ff]" /> IPL CHALLENGE
@@ -109,7 +109,7 @@ export default async function Dashboard(props: any) {
            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#c0c1ff] via-[#8084ff] to-[#ffb0cd]"></div>
            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[1px] bg-white opacity-50 blur-[2px]"></div>
 
-           <div className="relative z-10 max-w-[1400px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
+           <div className="relative z-10 w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
                <div className="max-w-xl">
                   {/* Status Badge */}
                   <div className="inline-flex items-center gap-2 mb-6 bg-[#131b2e]/80 border border-[#2d3449] px-3 py-1.5 rounded-full backdrop-blur-md shadow-sm">
@@ -161,7 +161,7 @@ export default async function Dashboard(props: any) {
         </div>
 
         {/* MATCHES SECTION — constrained */}
-        <div className="max-w-[1400px] mx-auto px-6">
+        <div className="w-full px-6 sm:px-10">
         <div id="arena" className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 mt-16 scroll-mt-24">
            <h2 className="text-3xl font-['Space_Grotesk',_sans-serif] font-black text-white italic tracking-tighter uppercase">
              {filter === 'upcoming' ? 'Upcoming Matches' : filter === 'completed' ? 'Past Matches' : 'Arena Matches'}
