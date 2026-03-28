@@ -55,7 +55,7 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="font-sans min-h-full flex flex-col bg-[#0b1326] text-[#dae2fd] selection:bg-[#c0c1ff] selection:text-[#0b1326] overflow-x-hidden w-full">
-        <main className="flex-1 shrink-0 flex flex-col items-center w-full">
+        <main className="flex-1 shrink-0 flex flex-col w-full">
            {children}
         </main>
         

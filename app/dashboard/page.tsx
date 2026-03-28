@@ -51,7 +51,7 @@ export default async function Dashboard(props: any) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0b1326] text-[#dae2fd] pb-24 font-['Inter',_sans-serif]">
+    <div className="w-full min-h-screen bg-[#0b1326] text-[#dae2fd] pb-24 font-['Inter',_sans-serif]">
       {/* KINETIC NAV */}
       <nav className="border-b border-[#171f33] bg-[#0b1326]/80 backdrop-blur-md sticky top-0 z-50">
         <div className="w-full px-6 sm:px-10 h-20 flex items-center justify-between">
