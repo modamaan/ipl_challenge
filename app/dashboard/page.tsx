@@ -289,8 +289,18 @@ export default async function Dashboard(props: any) {
                             </Link>
                             <ChallengeShareButton challengeId={userChallengeIds[match.id]} />
                           </div>
-                        ) : (
+                        ) : lockedMatchIds.has(match.id) ? (
                           <ChallengeDialog matchId={match.id} />
+                        ) : (
+                          <div className="w-full flex flex-col gap-1.5 cursor-not-allowed">
+                            <div className="w-full border-2 border-dashed border-[#2d3449]/40 bg-[#0b1326]/50 text-[#464554] font-['Space_Grotesk',_sans-serif] font-bold italic uppercase tracking-wider h-[46px] rounded-md flex justify-center items-center gap-2 select-none">
+                              <Swords className="w-[16px] h-[16px]" />
+                              <span className="text-xs">Challenge a Friend</span>
+                            </div>
+                            <p className="text-center text-[10px] text-[#464554] font-medium tracking-wide">
+                              🔒 Lock your prediction first
+                            </p>
+                          </div>
                         )}
                       </div>
                     </>
