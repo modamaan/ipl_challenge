@@ -21,6 +21,11 @@ export const metadata: Metadata = {
     template: "%s | IPL Challenge",
   },
   description: "Create match prediction cards, challenge friends with custom stakes, and climb the leaderboard as live results unfold pitch-side.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     title: "IPL Challenge | Predict & Claim the Crown",
     description: "Create match prediction cards, challenge friends with custom stakes, and climb the leaderboard.",
