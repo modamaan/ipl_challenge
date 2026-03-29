@@ -65,14 +65,16 @@ export default async function ChallengePage(props: { params: Promise<{ challenge
     .where(eq(predictions.challengeId, challengeId));
 
   const hasPredicted = allPredictions.some(p => p.user.id === session.user?.id);
+  const challengeIsFull = allPredictions.length >= 2;
 
-  if (!hasPredicted) {
+  // Show prediction form only if: user hasn't predicted yet AND challenge has < 2 participants
+  if (!hasPredicted && !challengeIsFull) {
     return (
       <div className="min-h-screen bg-[#0b1326] text-[#dae2fd] font-['Inter',_sans-serif] pb-20">
         <nav className="border-b border-[#2d3449] bg-[#0b1326]/80 backdrop-blur-md sticky top-0 z-50">
            <div className="max-w-[1400px] mx-auto px-6 flex justify-between items-center h-[72px]">
              <Link href="/" className="font-['Space_Grotesk',_sans-serif] font-black text-xl tracking-tighter italic text-white flex items-center gap-2">
-                KINETIC
+                IPL CHALLENGE
              </Link>
              <div className="flex items-center gap-8 text-[10px] sm:text-xs font-bold tracking-widest text-[#908fa0]">
                 <Link href="/dashboard" className="text-[#908fa0] hover:text-white uppercase transition-colors hidden sm:inline-block">Arena</Link>
@@ -99,6 +101,42 @@ export default async function ChallengePage(props: { params: Promise<{ challenge
            <div className="bg-[#131b2e] rounded-3xl border border-[#2d3449] shadow-2xl px-4 sm:px-8 md:px-14 pt-10 md:pt-14 pb-8 mb-20 overflow-hidden relative">
              <PredictionForm match={match} challengeId={challenge.id} />
            </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Challenge is full (2 participants already) but current user hasn't predicted — show locked state
+  if (!hasPredicted && challengeIsFull) {
+    return (
+      <div className="min-h-screen bg-[#0b1326] text-[#dae2fd] font-['Inter',_sans-serif] pb-20 flex flex-col">
+        <nav className="border-b border-[#2d3449] bg-[#0b1326]/80 backdrop-blur-md sticky top-0 z-50">
+          <div className="max-w-[1400px] mx-auto px-6 flex justify-between items-center h-[72px]">
+            <Link href="/" className="font-['Space_Grotesk',_sans-serif] font-black text-xl tracking-tighter italic text-white flex items-center gap-2">
+              IPL CHALLENGE
+            </Link>
+            <Link href="/dashboard" className="text-xs font-bold tracking-widest text-[#908fa0] hover:text-white uppercase transition-colors hidden sm:inline-block">Arena</Link>
+          </div>
+        </nav>
+        <div className="flex-1 flex flex-col items-center justify-center px-4 py-20 text-center">
+          <div className="w-20 h-20 rounded-2xl bg-[#1a1430] border-2 border-[#ff6b6b]/30 flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(255,107,107,0.1)]">
+            <svg className="w-10 h-10 text-[#ff6b6b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div className="inline-block bg-[#ff6b6b]/10 text-[#ff6b6b] font-black text-[10px] tracking-[0.15em] uppercase px-4 py-1.5 rounded-sm mb-6 border border-[#ff6b6b]/20">Challenge Closed</div>
+          <h1 className="text-3xl md:text-5xl font-['Space_Grotesk',_sans-serif] font-black italic uppercase tracking-tighter text-white mb-4">
+            This Duel is Full
+          </h1>
+          <p className="text-[#908fa0] font-medium text-base max-w-sm mx-auto mb-10">
+            Both challengers have already locked their predictions. This battle is between {allPredictions[0]?.user.name} and {allPredictions[1]?.user.name}.
+          </p>
+          <Link href="/dashboard">
+            <button className="bg-gradient-to-r from-[#c0c1ff] to-[#a0a5ff] hover:from-[#e1e0ff] hover:to-[#c0c1ff] text-[#07006c] font-black uppercase tracking-widest text-sm px-8 py-4 rounded-xl transition-all shadow-[0_0_30px_rgba(192,193,255,0.2)] hover:shadow-[0_0_40px_rgba(192,193,255,0.4)] flex items-center gap-3">
+              <Swords className="w-4 h-4" />
+              Start Your Own Challenge
+            </button>
+          </Link>
         </div>
       </div>
     );
