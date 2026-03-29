@@ -57,15 +57,37 @@ export default async function ChallengePage(props: { params: Promise<{ challenge
   const creatorRes = await db.select().from(users).where(eq(users.id, challenge.creatorId)).limit(1);
   const creator = creatorRes[0];
 
-  const allPredictions = await db.select({
+  let allPredictions = await db.select({
     prediction: predictions,
     user: users
   }).from(predictions)
     .innerJoin(users, eq(predictions.userId, users.id))
     .where(eq(predictions.challengeId, challengeId));
 
+  // Self-healing: if the creator's prediction isn't linked to this challenge yet,
+  // link it now (handles challenges created before the auto-link fix)
+  const creatorAlreadyLinked = allPredictions.some(p => p.user.id === challenge.creatorId);
+  if (!creatorAlreadyLinked) {
+    const creatorStandalonePred = await db.select().from(predictions).where(
+      and(eq(predictions.userId, challenge.creatorId), eq(predictions.matchId, challenge.matchId))
+    ).limit(1);
+    if (creatorStandalonePred.length > 0) {
+      await db.update(predictions)
+        .set({ challengeId })
+        .where(eq(predictions.id, creatorStandalonePred[0].id));
+      // Re-fetch with the newly linked prediction
+      allPredictions = await db.select({
+        prediction: predictions,
+        user: users
+      }).from(predictions)
+        .innerJoin(users, eq(predictions.userId, users.id))
+        .where(eq(predictions.challengeId, challengeId));
+    }
+  }
+
   const hasPredicted = allPredictions.some(p => p.user.id === session.user?.id);
   const challengeIsFull = allPredictions.length >= 2;
+
 
   // Show prediction form only if: user hasn't predicted yet AND challenge has < 2 participants
   if (!hasPredicted && !challengeIsFull) {
