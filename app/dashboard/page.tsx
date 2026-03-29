@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { matches, predictions, users } from "@/lib/db/schema";
+import { matches, predictions, users, challenges } from "@/lib/db/schema";
 import { desc, eq } from "drizzle-orm";
 import {
   Trophy, Flame, Swords, Calendar, Timer,
@@ -33,6 +33,7 @@ export default async function Dashboard(props: any) {
   if (filter === 'completed') displayMatches = allMatches.filter(m => m.status === 'completed');
 
   let userChallengeIds: Record<string, string> = {};
+  let userChallengeStakes: Record<string, string> = {};
   let lockedMatchIds: Set<string> = new Set();
   let userPoints = 0;
 
@@ -47,9 +48,34 @@ export default async function Dashboard(props: any) {
     }).from(predictions)
       .where(eq(predictions.userId, session.user.id));
 
+    // Collect all challengeIds to fetch stakes in one query
+    const challengeIds = userPredictions
+      .map(p => p.challengeId)
+      .filter((id): id is string => !!id);
+
+    let stakesMap: Record<string, string> = {};
+    if (challengeIds.length > 0) {
+      const challengeRows = await db.select({
+        id: challenges.id,
+        stakes: challenges.stakesDescription
+      }).from(challenges).where(
+        challengeIds.length === 1
+          ? eq(challenges.id, challengeIds[0])
+          : eq(challenges.id, challengeIds[0]) // fallback; loop below handles multi
+      );
+      // Fetch individually if multiple (simple approach for now)
+      const allChallengeRows = await Promise.all(
+        challengeIds.map(id => db.select({ id: challenges.id, stakes: challenges.stakesDescription }).from(challenges).where(eq(challenges.id, id)).limit(1))
+      );
+      allChallengeRows.flat().forEach(c => { stakesMap[c.id] = c.stakes; });
+    }
+
     userPredictions.forEach(p => {
       lockedMatchIds.add(p.matchId);
-      if (p.challengeId) userChallengeIds[p.matchId] = p.challengeId;
+      if (p.challengeId) {
+        userChallengeIds[p.matchId] = p.challengeId;
+        userChallengeStakes[p.matchId] = stakesMap[p.challengeId] || "";
+      }
     });
   }
 
@@ -287,7 +313,12 @@ export default async function Dashboard(props: any) {
                                 <span>Live VS Board</span>
                               </button>
                             </Link>
-                            <ChallengeShareButton challengeId={userChallengeIds[match.id]} />
+                            <ChallengeShareButton
+                              challengeId={userChallengeIds[match.id]}
+                              team1={match.team1}
+                              team2={match.team2}
+                              stakes={userChallengeStakes[match.id] || ""}
+                            />
                           </div>
                         ) : lockedMatchIds.has(match.id) ? (
                           <ChallengeDialog matchId={match.id} />

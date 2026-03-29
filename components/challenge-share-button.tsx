@@ -3,7 +3,19 @@
 import { useState } from "react";
 import { Copy, MessageCircle, Share2, Check } from "lucide-react";
 
-export function ChallengeShareButton({ challengeId }: { challengeId: string }) {
+interface ChallengeShareButtonProps {
+  challengeId: string;
+  team1?: string;
+  team2?: string;
+  stakes?: string;
+}
+
+export function ChallengeShareButton({
+  challengeId,
+  team1,
+  team2,
+  stakes,
+}: ChallengeShareButtonProps) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -18,9 +30,16 @@ export function ChallengeShareButton({ challengeId }: { challengeId: string }) {
   }
 
   function handleWhatsApp() {
-    const text = encodeURIComponent(
-      `🔥 I challenge you to an IPL Prediction Battle!\n\n⚔️ Accept here: ${link}`
-    );
+    const matchLine = team1 && team2 ? `🏏 Match: ${team1} vs ${team2}` : "";
+    const stakesLine = stakes ? `🏆 Stakes: ${stakes}` : "";
+    const parts = [
+      `🔥 I challenge you to an IPL Prediction Battle!`,
+      matchLine,
+      stakesLine,
+      `⚔️ Accept your challenge: ${link}`,
+    ].filter(Boolean);
+
+    const text = encodeURIComponent(parts.join("\n\n"));
     window.open(`https://wa.me/?text=${text}`, "_blank");
   }
 
@@ -45,6 +64,22 @@ export function ChallengeShareButton({ challengeId }: { challengeId: string }) {
               Share Your Challenge
             </p>
 
+            {/* Match + Stakes preview */}
+            {(team1 && team2 || stakes) && (
+              <div className="bg-[#0b1326] border border-[#2d3449] rounded-lg px-3 py-2.5 space-y-1">
+                {team1 && team2 && (
+                  <p className="text-[#dae2fd] text-[10px] font-black uppercase tracking-wider">
+                    🏏 {team1} vs {team2}
+                  </p>
+                )}
+                {stakes && (
+                  <p className="text-[#ffb95f] text-[10px] font-bold">
+                    🏆 Stakes: {stakes}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Link display */}
             <div className="bg-[#0b1326] border border-[#2d3449] rounded-lg px-3 py-2.5">
               <p className="text-[#dae2fd] font-mono text-[9px] truncate">{link}</p>
@@ -56,15 +91,15 @@ export function ChallengeShareButton({ challengeId }: { challengeId: string }) {
                 className="flex-1 flex items-center justify-center gap-2 bg-[#2d3449] hover:bg-[#364058] text-[#dae2fd] font-bold text-[10px] uppercase tracking-wider border border-[#464554] rounded-lg py-3 transition-colors"
               >
                 {copied
-                  ? <><Check className="w-3.5 h-3.5 text-[#4ade80]" /> <span className="text-[#4ade80]">Copied!</span></>
-                  : <><Copy className="w-3.5 h-3.5" /> Copy Link</>
+                  ? <><Check className="w-3.5 h-3.5 text-[#4ade80]" /><span className="text-[#4ade80]">Copied!</span></>
+                  : <><Copy className="w-3.5 h-3.5" />Copy Link</>
                 }
               </button>
               <button
                 onClick={handleWhatsApp}
                 className="flex-1 flex items-center justify-center gap-2 bg-[#25D366]/15 hover:bg-[#25D366]/25 text-[#25D366] font-bold text-[10px] uppercase tracking-wider border border-[#25D366]/40 rounded-lg py-3 transition-colors"
               >
-                <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
+                <MessageCircle className="w-3.5 h-3.5" />WhatsApp
               </button>
             </div>
           </div>
