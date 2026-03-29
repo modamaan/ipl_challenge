@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ChallengeDialog } from "@/components/challenge-dialog";
+import { ChallengeShareButton } from "@/components/challenge-share-button";
 import { SignOut } from "@/components/auth-button";
 import { MobileNav } from "@/components/mobile-nav";
 import { RulesDialog } from "@/components/rules-dialog";
@@ -279,12 +280,15 @@ export default async function Dashboard(props: any) {
 
                       <div className="w-full">
                         {userChallengeIds[match.id] ? (
-                          <Link href={`/challenge/${userChallengeIds[match.id]}`} className="block w-full">
-                            <button className="w-full bg-[#131b2e] hover:bg-[#171f33] text-[#c0c1ff] border border-[#c0c1ff]/30 font-['Space_Grotesk',_sans-serif] font-bold italic uppercase tracking-wider py-[14px] rounded-md transition-colors text-xs flex justify-center items-center gap-2">
-                              <Swords className="w-4 h-4" />
-                              <span>Live VS Board</span>
-                            </button>
-                          </Link>
+                          <div className="flex gap-2 w-full">
+                            <Link href={`/challenge/${userChallengeIds[match.id]}`} className="flex-1">
+                              <button className="w-full bg-[#131b2e] hover:bg-[#171f33] text-[#c0c1ff] border border-[#c0c1ff]/30 font-['Space_Grotesk',_sans-serif] font-bold italic uppercase tracking-wider py-[14px] rounded-md transition-colors text-xs flex justify-center items-center gap-2">
+                                <Swords className="w-4 h-4" />
+                                <span>Live VS Board</span>
+                              </button>
+                            </Link>
+                            <ChallengeShareButton challengeId={userChallengeIds[match.id]} />
+                          </div>
                         ) : (
                           <ChallengeDialog matchId={match.id} />
                         )}
