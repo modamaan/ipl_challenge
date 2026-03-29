@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { matches, predictions, users, challenges } from "@/lib/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import {
   Trophy, Flame, Swords, Calendar, Timer,
   Gamepad2, Medal, ChevronRight
@@ -26,7 +26,7 @@ export default async function Dashboard(props: any) {
   const filter = searchParams?.filter || 'all';
 
   const session = await auth();
-  let allMatches = await db.select().from(matches).orderBy(desc(matches.createdAt));
+  let allMatches = await db.select().from(matches).orderBy(matches.matchTime);
 
   let displayMatches = allMatches;
   if (filter === 'upcoming') displayMatches = allMatches.filter(m => m.status === 'upcoming');
