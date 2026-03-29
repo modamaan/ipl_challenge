@@ -41,9 +41,12 @@ export async function generateMetadata(props: { params: Promise<{ challengeId: s
 
 export default async function ChallengePage(props: { params: Promise<{ challengeId: string }> }) {
   const session = await auth();
-  if (!session) redirect("/");
-
   const { challengeId } = await props.params;
+
+  if (!session) {
+    const callbackUrl = encodeURIComponent(`/challenge/${challengeId}`);
+    redirect(`/?callbackUrl=${callbackUrl}`);
+  }
   const challengeRes = await db.select().from(challenges).where(eq(challenges.id, challengeId)).limit(1);
   const challenge = challengeRes[0];
 
