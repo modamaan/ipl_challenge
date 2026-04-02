@@ -42,9 +42,9 @@ export async function resolveMatch(formData: FormData) {
   const topScorer = formData.get("topScorer") as string;
   const totalRuns = formData.get("totalRuns") as string;
   const matchResult = formData.get("matchResult") as string;
-  const playerPerf = formData.get("playerPerf") as string;
+  const topWicketTaker = formData.get("topWicketTaker") as string;
 
-  const actualResults = { tossWinner, topScorer, totalRuns, matchResult, playerPerf };
+  const actualResults = { tossWinner, topScorer, totalRuns, matchResult, topWicketTaker };
 
   // Update match status & results
   await db.update(matches).set({
@@ -61,7 +61,7 @@ export async function resolveMatch(formData: FormData) {
     if (p.topScorer?.toLowerCase() === topScorer.toLowerCase()) points += 10;
     if (p.totalRuns === totalRuns) points += 10;
     if (p.matchResult === matchResult) points += 10;
-    if (p.playerPerf?.toLowerCase() === playerPerf.toLowerCase()) points += 10;
+    if (p.topWicketTaker?.toLowerCase() === topWicketTaker.toLowerCase()) points += 10;
 
     if (points > 0) {
       await db.update(predictions).set({ pointsEarned: points }).where(eq(predictions.id, p.id));

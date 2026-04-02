@@ -38,7 +38,7 @@ export const predictions = pgTable("predictions", {
   topScorer: text("top_scorer"),
   totalRuns: text("total_runs"), // e.g., "160-180", "180+"
   matchResult: text("match_result"), // Which team wins
-  playerPerf: text("player_perf"), // e.g., "Kohli 50+", "Bumrah 2+ Wickets"
+  topWicketTaker: text("top_wicket_taker"), // e.g., "Bumrah 3+ Wickets"
   isLocked: boolean("is_locked").default(false).notNull(),
   pointsEarned: integer("points_earned").default(0), // Calculated after match completion
   createdAt: timestamp("created_at").defaultNow().notNull(),

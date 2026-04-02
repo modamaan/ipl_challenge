@@ -6,8 +6,9 @@ import { redirect } from "next/navigation";
 import { createMatch, resolveMatch } from "@/app/actions/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from "@/components/ui/select";
 import { IPL_TEAMS } from "@/lib/teams";
+import { TEAM_PLAYERS } from "@/lib/players";
 import Link from "next/link";
 import { ArrowLeft, Rocket, Activity, CheckCircle2, ShieldAlert } from "lucide-react";
 import type { Metadata } from "next";
@@ -154,8 +155,45 @@ export default async function AdminPage() {
                             </SelectContent>
                           </Select>
                           
-                          <Input name="topScorer" placeholder="Top Scorer (e.g. Kohli)" required className="bg-[#0b1326] border-[#2d3449] text-white text-sm focus-visible:ring-[#ffb0cd]" />
-                          <Input name="playerPerf" placeholder="Player Performance" required className="bg-[#0b1326] border-[#2d3449] text-white text-sm focus-visible:ring-[#ffb0cd]" />
+                          <Select name="topScorer" required>
+                            <SelectTrigger className="bg-[#0b1326] border-[#2d3449] text-white w-full focus:ring-[#ffb0cd]">
+                              <SelectValue placeholder="Top Scorer" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-[#131b2e] border-[#2d3449] text-white font-bold">
+                              <SelectGroup>
+                                <SelectLabel className="text-[#908fa0]">{m.team1}</SelectLabel>
+                                {(TEAM_PLAYERS[m.team1] || []).map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                              </SelectGroup>
+                              <SelectGroup>
+                                <SelectLabel className="text-[#908fa0]">{m.team2}</SelectLabel>
+                                {(TEAM_PLAYERS[m.team2] || []).map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                              </SelectGroup>
+                              <SelectGroup>
+                                <SelectLabel className="text-[#908fa0]">Other</SelectLabel>
+                                <SelectItem value="Other/Unlisted">Other/Unlisted</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          
+                          <Select name="topWicketTaker" required>
+                            <SelectTrigger className="bg-[#0b1326] border-[#2d3449] text-white w-full focus:ring-[#ffb0cd]">
+                              <SelectValue placeholder="Top Wicket Taker" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-[#131b2e] border-[#2d3449] text-white font-bold">
+                              <SelectGroup>
+                                <SelectLabel className="text-[#908fa0]">{m.team1}</SelectLabel>
+                                {(TEAM_PLAYERS[m.team1] || []).map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                              </SelectGroup>
+                              <SelectGroup>
+                                <SelectLabel className="text-[#908fa0]">{m.team2}</SelectLabel>
+                                {(TEAM_PLAYERS[m.team2] || []).map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                              </SelectGroup>
+                              <SelectGroup>
+                                <SelectLabel className="text-[#908fa0]">Other</SelectLabel>
+                                <SelectItem value="Other/Unlisted">Other/Unlisted</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
                           
                           <Button type="submit" className="w-full bg-[#10b981] hover:bg-[#059669] text-[#064e3b] font-['Space_Grotesk',_sans-serif] font-black italic uppercase tracking-widest mt-4 h-12 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all">
                             Resolve Match & Push Points

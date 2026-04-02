@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { submitPrediction } from "@/app/actions";
 import { Loader2 } from "lucide-react";
+import { TEAM_PLAYERS } from "@/lib/players";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from "@/components/ui/select";
 
 export function PredictionForm({ match, challengeId }: { match: any, challengeId?: string }) {
   const [tossWinner, setTossWinner] = useState("");
@@ -86,14 +88,50 @@ export function PredictionForm({ match, challengeId }: { match: any, challengeId
             <span className="w-8 h-8 rounded-md bg-[#2d3449] flex items-center justify-center text-[#c0c1ff] shadow-inner text-[15px] not-italic">4</span> 
             Top Scorer
           </h3>
-          <input suppressHydrationWarning name="topScorer" required placeholder="e.g. Virat Kohli" className="w-full bg-[#0b1326] border-2 border-[#2d3449] rounded-xl px-5 py-4 text-white placeholder:text-[#464554] focus:outline-none focus:border-[#c0c1ff] font-bold transition-colors shadow-inner" />
+          <Select name="topScorer" required>
+            <SelectTrigger className="w-full bg-[#0b1326] border-2 border-[#2d3449] rounded-xl px-5 h-16 text-white text-base font-bold focus:ring-[#c0c1ff]">
+              <SelectValue placeholder="Select Top Scorer" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#131b2e] border-[#2d3449] text-white max-h-[300px]">
+              <SelectGroup>
+                <SelectLabel className="text-[#c0c1ff] font-['Space_Grotesk',_sans-serif] uppercase tracking-widest text-xs font-black">{match.team1}</SelectLabel>
+                {(TEAM_PLAYERS[match.team1] || []).map(p => <SelectItem key={p} value={p} className="font-bold cursor-pointer">{p}</SelectItem>)}
+              </SelectGroup>
+              <SelectGroup>
+                <SelectLabel className="text-[#c0c1ff] font-['Space_Grotesk',_sans-serif] uppercase tracking-widest text-xs font-black mt-2">{match.team2}</SelectLabel>
+                {(TEAM_PLAYERS[match.team2] || []).map(p => <SelectItem key={p} value={p} className="font-bold cursor-pointer">{p}</SelectItem>)}
+              </SelectGroup>
+              <SelectGroup>
+                <SelectLabel className="text-[#908fa0] uppercase tracking-widest text-xs font-black mt-2">Other</SelectLabel>
+                <SelectItem value="Other/Unlisted" className="font-bold text-[#c7c4d7] cursor-pointer">Other/Unlisted</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <h3 className="text-[#dae2fd] font-['Space_Grotesk',_sans-serif] font-black text-xl italic uppercase tracking-wider mb-4 flex items-center gap-4 ml-0 md:-ml-12">
             <span className="w-8 h-8 rounded-md bg-[#2d3449] flex items-center justify-center text-[#c0c1ff] shadow-inner text-[15px] not-italic">5</span> 
-            Player Performance
+            Top Wicket Taker
           </h3>
-          <input suppressHydrationWarning name="playerPerf" required placeholder="e.g. Bumrah 3+ Wickets" className="w-full bg-[#0b1326] border-2 border-[#2d3449] rounded-xl px-5 py-4 text-white placeholder:text-[#464554] focus:outline-none focus:border-[#c0c1ff] font-bold transition-colors shadow-inner" />
+          <Select name="topWicketTaker" required>
+            <SelectTrigger className="w-full bg-[#0b1326] border-2 border-[#2d3449] rounded-xl px-5 h-16 text-white text-base font-bold focus:ring-[#ffb0cd]">
+              <SelectValue placeholder="Select Top Wicket Taker" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#131b2e] border-[#2d3449] text-white max-h-[300px]">
+              <SelectGroup>
+                <SelectLabel className="text-[#ffb0cd] font-['Space_Grotesk',_sans-serif] uppercase tracking-widest text-xs font-black">{match.team1}</SelectLabel>
+                {(TEAM_PLAYERS[match.team1] || []).map(p => <SelectItem key={p} value={p} className="font-bold cursor-pointer">{p}</SelectItem>)}
+              </SelectGroup>
+              <SelectGroup>
+                <SelectLabel className="text-[#ffb0cd] font-['Space_Grotesk',_sans-serif] uppercase tracking-widest text-xs font-black mt-2">{match.team2}</SelectLabel>
+                {(TEAM_PLAYERS[match.team2] || []).map(p => <SelectItem key={p} value={p} className="font-bold cursor-pointer">{p}</SelectItem>)}
+              </SelectGroup>
+              <SelectGroup>
+                <SelectLabel className="text-[#908fa0] uppercase tracking-widest text-xs font-black mt-2">Other</SelectLabel>
+                <SelectItem value="Other/Unlisted" className="font-bold text-[#c7c4d7] cursor-pointer">Other/Unlisted</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

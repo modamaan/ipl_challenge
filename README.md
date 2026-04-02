@@ -28,7 +28,7 @@ Each match has 5 prediction categories worth **10 points each** (max 50 pts/matc
 | ✅ Top Scorer | 10 |
 | ✅ Total Runs Bracket | 10 |
 | ✅ Match Winner | 10 |
-| ✅ Player Performance | 10 |
+| ✅ Top Wicket Taker | 10 |
 | **Max per match** | **50** |
 
 ---
@@ -56,7 +56,7 @@ users          → id, name, email, image, totalPoints
 matches        → id, team1, team2, matchTime, status, actualResults
 challenges     → id, matchId, creatorId, stakesDescription, status
 predictions    → id, userId, matchId, challengeId, tossWinner, topScorer,
-                 totalRuns, matchResult, playerPerf, pointsEarned
+                 totalRuns, matchResult, topWicketTaker, pointsEarned
 ```
 
 ---

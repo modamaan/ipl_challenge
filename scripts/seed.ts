@@ -22,7 +22,7 @@ async function seed() {
     team2: "MI",
     matchTime: new Date(Date.now() - 86400000), // Yesterday
     status: "completed",
-    actualResults: { tossWinner: "CSK", matchResult: "CSK", totalRuns: "190+", topScorer: "MS Dhoni", playerPerf: "Jadeja 3W" }
+    actualResults: { tossWinner: "CSK", matchResult: "CSK", totalRuns: "190+", topScorer: "MS Dhoni", topWicketTaker: "Jadeja 3W" }
   }).returning();
 
   console.log(`Created completed Match: ${match.team1} vs ${match.team2}`);
@@ -46,7 +46,7 @@ async function seed() {
     matchResult: "MI", // Incorrect
     totalRuns: "190+", // Correct
     topScorer: "MS Dhoni", // Correct
-    playerPerf: "Jadeja 3W", // Correct
+    topWicketTaker: "Jadeja 3W", // Correct
     isLocked: true,
     pointsEarned: 40
   });
@@ -64,8 +64,8 @@ async function seed() {
   ]).returning();
 
   await db.insert(predictions).values([
-    { userId: dummy1.id, matchId: match.id, challengeId: challenge.id, tossWinner: "NAVI ALLIANCE", matchResult: "NAVI ALLIANCE", totalRuns: "190+", topScorer: "S1MPLE_X", playerPerf: "AWP 3K", isLocked: true, pointsEarned: 0 },
-    { userId: dummy2.id, matchId: match.id, challengeId: challenge.id, tossWinner: "G2 LEGION", matchResult: "G2 LEGION", totalRuns: "<150", topScorer: "NIKO_PRIME", playerPerf: "Clutch 1v3", isLocked: true, pointsEarned: 0 }
+    { userId: dummy1.id, matchId: match.id, challengeId: challenge.id, tossWinner: "NAVI ALLIANCE", matchResult: "NAVI ALLIANCE", totalRuns: "190+", topScorer: "S1MPLE_X", topWicketTaker: "AWP 3K", isLocked: true, pointsEarned: 0 },
+    { userId: dummy2.id, matchId: match.id, challengeId: challenge.id, tossWinner: "G2 LEGION", matchResult: "G2 LEGION", totalRuns: "<150", topScorer: "NIKO_PRIME", topWicketTaker: "Clutch 1v3", isLocked: true, pointsEarned: 0 }
   ]);
 
   console.log("Added 2 dummy friends to your challenge!");

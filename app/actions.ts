@@ -15,7 +15,7 @@ export async function submitPrediction(formData: FormData) {
   const topScorer = formData.get("topScorer") as string;
   const totalRuns = formData.get("totalRuns") as string;
   const matchResult = formData.get("matchResult") as string;
-  const playerPerf = formData.get("playerPerf") as string;
+  const topWicketTaker = formData.get("topWicketTaker") as string;
 
   // Verify match is still upcoming (locking mechanism)
   const matchRes = await db.select().from(matches).where(eq(matches.id, matchId)).limit(1);
@@ -40,7 +40,7 @@ export async function submitPrediction(formData: FormData) {
 
   if (existing) {
     await db.update(predictions).set({
-      tossWinner, topScorer, totalRuns, matchResult, playerPerf,
+      tossWinner, topScorer, totalRuns, matchResult, topWicketTaker,
       ...(challengeId ? { challengeId } : {})
     }).where(eq(predictions.id, existing.id));
   } else {
@@ -48,7 +48,7 @@ export async function submitPrediction(formData: FormData) {
       userId: session.user.id,
       matchId,
       ...(challengeId ? { challengeId } : {}),
-      tossWinner, topScorer, totalRuns, matchResult, playerPerf,
+      tossWinner, topScorer, totalRuns, matchResult, topWicketTaker,
       isLocked: false // Automatic lock when match starts
     });
   }
