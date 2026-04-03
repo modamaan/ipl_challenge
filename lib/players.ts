@@ -65,7 +65,8 @@ export const TEAM_PLAYERS: Record<string, string[]> = {
     "Anrich Nortje",
     "Finn Allen",
     "Manish Pandey",
-    "Vaibhav Arora"
+    "Vaibhav Arora",
+    "Angkrish Raghuvanshi"
   ],
   "RR": [
     "Riyan Parag",
