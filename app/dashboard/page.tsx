@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 export default async function Dashboard(props: any) {
   const searchParams = await props.searchParams;
-  const filter = searchParams?.filter || 'all';
+  const filter = searchParams?.filter || 'upcoming';
 
   const session = await auth();
   let allMatches = await db.select().from(matches).orderBy(matches.matchTime);
